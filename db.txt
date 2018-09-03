@@ -1,0 +1,61 @@
+1. CASCADED DROP tables;
+
+   -> songs
+   -> albums
+
+
+2. run queries below.
+
+...................................................
+
+
+
+
+CREATE TABLE albums
+(
+  movie character varying(100),
+  link text,
+  is_fetched boolean,
+  released character varying(20),
+  "cast" character varying(500),
+  director character varying(100),
+  id bigserial NOT NULL,
+  CONSTRAINT albums_pkey PRIMARY KEY (id),
+  CONSTRAINT albums_link_key UNIQUE (link)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE albums
+  OWNER TO postgres;
+
+
+CREATE TABLE songs
+(
+  name character varying(100),
+  link text,
+  director character varying(100),
+  movie character varying(100),
+  album_id bigint,
+  singers character varying(200),
+  id bigserial NOT NULL,
+  CONSTRAINT songs_album_id_fkey FOREIGN KEY (album_id)
+      REFERENCES albums (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE songs
+  OWNER TO postgres;
+
+
+ALTER TABLE songs
+  ADD CONSTRAINT songs_album_id_fkey FOREIGN KEY (album_id)
+      REFERENCES albums (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+.................................................
+
+Paste above thing into SQL and Select ALl
+and run Execute pgScript.
